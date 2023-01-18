@@ -67,6 +67,10 @@ app.get("/join", (req, res) => {
 });
 
 app.get("/create-exercise", (req, res) => {
+  res.render("create-exercise", {errors: {}});
+})
+
+app.get("/create-exercise", (req, res) => {
   res.render("create-exercise");
 })
 

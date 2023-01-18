@@ -2,18 +2,26 @@ const Exercise = require("../models/Exercise");
 const { db } = require("../models/User");
 
 exports.create = async (req, res) => {
-    let exercise =  new Exercise({date: req.body.date, 
-                                  exerciseName: req.body.exerciseName, 
-                                  weight: req.body.weight, 
-                                  setAndReps: req.body.setAndReps, 
-                                  comments: req.body.comments});
     try{
+        let exercise =  new Exercise(
+            {date: req.body.date, 
+            exerciseName: req.body.exerciseName, 
+            weight: req.body.weight, 
+            setAndReps: req.body.setAndReps, 
+            comments: req.body.comments});
         await exercise.save();
         res.redirect("/create-success");
     }catch(e){
-        return res.status(400).send({message: JSON.parse(e)})
+        if(e.errors) {
+            console.log(e.errors);
+            res.render('create-exercise', { errors: e.errors});
+            return;
+        }
+        return res.status(400).send({
+            message: JSON.parse(e),
+        });
     }
-};
+}
 
 exports.lists = async (req, res) => {
     try{
