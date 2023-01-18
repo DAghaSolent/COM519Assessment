@@ -9,7 +9,7 @@ exports.create = async (req, res) => {
                                   comments: req.body.comments});
     try{
         await exercise.save();
-        res.send("Exercise has been added to the database");
+        res.redirect("/create-success");
     }catch(e){
         return res.status(400).send({message: JSON.parse(e)})
     }

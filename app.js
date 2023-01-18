@@ -87,6 +87,10 @@ app.get("/delete-success", (req, res) => {
   res.render("delete-success");
 })
 
+app.get("/create-success", (req, res) => {
+  res.render("create-success");
+})
+
 app.get("/view-exercise/delete/:id", exerciseController.delete);
 
 
