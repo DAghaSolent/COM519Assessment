@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Create an Exercise 🏋️</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    </head>
+  <body>
+     <!-- Button that has my Linkedin connected to it -->
+     <div class="container-fluid">
+        <nav class="navbar navbar-light bg-light">
+            <form class="form-inline">
+                <a button type ="button" class="btn btn-success btn-lg" href="https://uk.linkedin.com/in/danial-agha-577367132"><i class="bi bi-linkedin"></i> Contact Me</a>
+            </form>
+        </nav>
+    </div>
+</div>
+<!-- Simple heading for the user homepage -->
+    <div class="text-center p-3">
+        <div class="display-1"> Create an Exercise 🏋️</div>
+    </div>
+<!-- Form fields to enter specific detail into the database for an exercise -->
+<div class="container">
+    <div class="text-center p6">
+    <div class="row justify-content-md-center">
+    <div class="col-md-2">
+    <form method="POST" action="/create-exercise">
+        <div class="form-group">
+            <label for="name">Date</label>
+            <input
+              type="date"
+              class="form-control"
+              id="name"
+              placeholder="Enter Date"
+              name="date"
+            />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row justify-content-md-center">
+            <div class="col-md-4">
+            <label for="name">Exercise Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              placeholder="Enter Name of Exercise"
+              name="exerciseName"
+            />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row justify-content-md-center">
+            <div class="col-md-4">
+            <label for="name">Weight</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              placeholder="Enter Weight in kg"
+              name="weight"
+            />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row justify-content-md-center">
+            <div class="col-md-4">
+            <label for="name">Sets & Reps</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              placeholder="Enter Sets and Reps in format (Set, Reps)"
+              name="setAndReps"
+            />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row justify-content-md-center">
+            <div class="col-md-8">
+            <label for="name">Comments</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              placeholder="Enter Comments"
+              name="comments"
+            />
+        </div>
+            </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</div>

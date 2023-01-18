@@ -13,8 +13,8 @@ exports.lists = async(req, res) => {
 exports.delete = async(req, res) => {
      const id = req.params.id
     try {
-        //const workouts =  await Workout.find({});
-        //res.render("workouts", {workouts: workouts});
+        const workouts =  await Workout.find({});
+        res.render("workouts", {workouts: workouts});
         await Workout.findByIdAndDelete(id);
         res.redirect("/workouts");
         

@@ -8,10 +8,12 @@ const User = require("./models/User");
 const Workout = require("./models/Workout");
 const Exercise = require("./models/Exercise");
 
+
 // controllers
 
 const workoutController = require("./controllers/workout");
 const userController = require("./controllers/user");
+const exerciseController = require("./controllers/exercise");
 
 const app = express();
 app.set("view engine", "ejs");
@@ -36,6 +38,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
+app.post("/create-exercise", exerciseController.create);
 
 app.get("/", (req, res) => {
   res.render("index");
@@ -47,9 +50,9 @@ app.get("/home", (req, res) => {
 
 app.get("/workouts", workoutController.lists);
 
-app.get("/view-exercise", (req, res) => {
-  res.render("view-exercise");
-});
+// app.get("/view-exercise", (req, res) => {
+//   res.render("view-exercise");
+// });
 
 app.get("/edit-exercise", (req, res) => {
   res.render("edit-exercise");
@@ -67,12 +70,18 @@ app.get("/join", (req, res) => {
   res.render('sign-up', {errors: {}});
 });
 
+app.get("/create-exercise", (req, res) => {
+  res.render("create-exercise");
+})
+
 app.post("/join", userController.create);
 
 app.get("/login", (req, res) => {
   res.render('login-user', { errors: {} })
 });
 app.post("/login", userController.login);
+
+app.get("/view-exercise", exerciseController.lists);
 
 app.listen(WEB_PORT, () => {
   console.log(`Example app listening at http://localhost:${WEB_PORT}`);

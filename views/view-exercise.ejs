@@ -22,67 +22,36 @@
         <div class="text-center p-3">
             <div class="display-3"> View Individual Exercise 🏋️</div>
         </div>
-    <table class="table table-bordered table-dark">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Exercise Name</th>
-            <th>Weight(Set 1)</th>
-            <th>Set 1(Reps)</th>
-            <th>Weight(Set 2)</th>
-            <th>Set 2(Reps)</th>
-            <th>Weight(Set 3)</th>
-            <th>Set 3(reps)</th>
-            <th>Weight(Set 4)</th>
-            <th>Set 4(reps)</th>
-            <th>Weight(Set 5)</th>
-            <th>Set 5(reps)</th>
-            <th>Comments</th>
-            
-
-        </tr>
-    </thead>
-            <tr>
-                <td>19/12/2022</td>
-                <td>Squat</td>
-                <td>100kg</td>
-                <td>5</td>
-                <td>100kg</td>
-                <td>5</td>
-                <td>100kg</td>
-                <td>5</td>
-                <td>100kg</td>
-                <td>5</td>
-                <td>100kg</td>
-                <td>5</td>
-                <td>Struggling with a bit of doms in this exercise</td>
-                <!-- <td class="text-center"><a class='btn btn-success btn-xs' href="#"><span class="glyphicon glyphicon-edit"></span> View</a> <a href="#" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-remove"></span> Edit</a> <a class='btn btn-danger btn-xs' href="#"><span class="glyphicon glyphicon-edit"> Del</span></td> -->
-                
-            </tr>
-            <tr>
-                <td>19/12/2022</td>
-                <td>Leg Extention</td>
-                <td>115kg</td>
-                <td>5</td>
-                <td>115kg</td>
-                <td>5</td>
-                <td>115kg</td>
-                <td>5</td>
-                <td>115kg</td>
-                <td>5</td>
-                <td>115kg</td>
-                <td>5</td>
-                <td>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore pariatur, iusto rem ex repudiandae libero eaque non ullam nesciunt id quia vitae quasi cum, veritatis ad perspiciatis praesentium similique quos.</td>
-                <!-- <td class="text-center"><a class='btn btn-success btn-xs' href="#"><span class="glyphicon glyphicon-edit"></span> View</a> <a href="#" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-remove"></span> Edit</a> <a class='btn btn-danger btn-xs' href="#"><span class="glyphicon glyphicon-edit"> Del</span></td> -->
-            </tr>
-          
-    </table>
     </div>
-    <div class="d-grid gap-2 col-12 mx-auto">
-        <button class="btn btn-success" type="button">Edit Exercise</button>
-        <button class="btn btn-danger" type="button">Delete Exercise</button>
-    </div>    
-    
 
+<!-- Table data for exercises -->
+<table class="table table-bordered table-dark">
+<thead>
+    <tr>
+        <td>Date</td>
+        <td>Exercise Name</td>
+        <td>Weight</td>
+        <td>Sets & Reps</td>
+        <td>Comments</td>
+        <td>Click to edit Exercise</td>
+        <td>Click to delete Exercise</td>
+    </tr>
+    
+                <% exercises.forEach(function(exercise){ %>
+                    <tr>
+                        <td><%=  exercise.date.toDateString() %></td>
+                        <td><%=  exercise.exerciseName %></td>
+                        <td><%=  exercise.weight %></td>
+                        <td><%=  exercise.setAndReps  %></td>
+                        <td><%=  exercise.comments  %></td>
+                        <td class="text-center"><a class='btn btn-info btn-xs'><span class="glyphicon glyphicon-edit"></span> Edit</a>
+                        <td class="text-center"><a class='btn btn-danger btn-xs'><span class="glyphicon glyphicon-edit"></span> Delete</a>      
+                    </tr>
+                <% }); %>
+
+            
+    
+</thead>
+</table>
   </body>
 </html>
