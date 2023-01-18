@@ -23,3 +23,13 @@ exports.lists = async (req, res) => {
         res.status(404).send({message: "could not find exercise"})
     }
 }
+
+exports.delete = async (req, res) => {
+    const id = req.params.id;
+    try{
+        await Exercise.findByIdAndDelete(id);
+        res.redirect("/delete-success");
+    } catch(e){
+        res.status(404).send({message: "could not delete exercise"})
+    }
+}

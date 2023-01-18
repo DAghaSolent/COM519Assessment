@@ -50,10 +50,6 @@ app.get("/home", (req, res) => {
 
 app.get("/workouts", workoutController.lists);
 
-// app.get("/view-exercise", (req, res) => {
-//   res.render("view-exercise");
-// });
-
 app.get("/edit-exercise", (req, res) => {
   res.render("edit-exercise");
 });
@@ -82,6 +78,17 @@ app.get("/login", (req, res) => {
 app.post("/login", userController.login);
 
 app.get("/view-exercise", exerciseController.lists);
+
+app.get("/edit-success", (req, res) => {
+  res.render("edit-success");
+})
+
+app.get("/delete-success", (req, res) => {
+  res.render("delete-success");
+})
+
+app.get("/view-exercise/delete/:id", exerciseController.delete);
+
 
 app.listen(WEB_PORT, () => {
   console.log(`Example app listening at http://localhost:${WEB_PORT}`);

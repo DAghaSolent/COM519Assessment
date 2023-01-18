@@ -45,13 +45,16 @@
                         <td><%=  exercise.setAndReps  %></td>
                         <td><%=  exercise.comments  %></td>
                         <td class="text-center"><a class='btn btn-info btn-xs'><span class="glyphicon glyphicon-edit"></span> Edit</a>
-                        <td class="text-center"><a class='btn btn-danger btn-xs'><span class="glyphicon glyphicon-edit"></span> Delete</a>      
+                        <td class="text-center"><a href="/view-exercise/delete/<%=exercise._id%>" class='btn btn-danger btn-xs'><span class="glyphicon glyphicon-edit"></span> Delete</a>      
                     </tr>
                 <% }); %>
 
-            
-    
 </thead>
 </table>
+    <form class="form-inline">
+        <div class="row justify-content-md-center">
+            <a button type="button" class="col-lg-6 btn btn-success btn-lg"  href="./create-exercise" type="button">Create Exercise</button></a>
+        </div>
+    </form>  
   </body>
 </html>
