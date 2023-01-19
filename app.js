@@ -70,6 +70,10 @@ app.get("/create-exercise", (req, res) => {
   res.render("create-exercise", {errors: {}});
 })
 
+app.get("/update-exercise", (req, res) => {
+  res.render("edit-exercise", {errors: {}});
+})
+
 app.get("/create-exercise", (req, res) => {
   res.render("create-exercise");
 })
@@ -96,7 +100,8 @@ app.get("/create-success", (req, res) => {
 })
 
 app.get("/view-exercise/delete/:id", exerciseController.delete);
-
+app.get("/view-exercise/update/:id", exerciseController.edit);
+app.post("/view-exercise/update/:id", exerciseController.update);
 
 app.listen(WEB_PORT, () => {
   console.log(`Example app listening at http://localhost:${WEB_PORT}`);

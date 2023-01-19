@@ -44,7 +44,7 @@
                         <td><%=  exercise.weight %></td>
                         <td><%=  exercise.setAndReps  %></td>
                         <td><%=  exercise.comments  %></td>
-                        <td class="text-center"><a class='btn btn-info btn-xs'><span class="glyphicon glyphicon-edit"></span> Edit</a>
+                        <td class="text-center"><a href="/view-exercise/update/<%=exercise._id%>" class='btn btn-info btn-xs'><span class="glyphicon glyphicon-edit"></span> Edit</a>
                         <td class="text-center"><a href="/view-exercise/delete/<%=exercise._id%>" class='btn btn-danger btn-xs'><span class="glyphicon glyphicon-edit"></span> Delete</a>      
                     </tr>
                 <% }); %>

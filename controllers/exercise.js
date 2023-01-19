@@ -41,3 +41,34 @@ exports.delete = async (req, res) => {
         res.status(404).send({message: "could not delete exercise"})
     }
 }
+
+exports.edit = async (req, res) => {
+    const id = req.params.id;
+    try{
+        const exercise = await Exercise.findById(id);
+        res.render("update-exercise", {exercise: exercise, id: id, errors: {} });
+    } catch(e){
+        if(e.errors){
+            console.log(e.errors);
+            return res.render('update-exercise', {errors: e.errors });
+        }
+        res.status(404).send({
+            message: `could not find exercise ${id}.`,
+        });
+    }
+}
+
+exports.update = async (req, res) => {
+    const id = req.params.id;
+    try{
+        const exercise = await Exercise.updateOne({ _id: id }, req.body, {runValidators:true});
+        res.redirect("/edit-success");
+    }catch(e){
+        if(e.errors){
+            return res.render('update-exercise', {errors: e.errors, exercise:req.body});
+        }
+        res.status(404).send({
+            message: `could not update exercise ${id}.`,
+        });
+    }
+}

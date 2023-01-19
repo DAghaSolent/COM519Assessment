@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Create an Exercise 🏋️</title>
+        <title>Edit a Exercise 🏋️</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
     </head>
@@ -20,17 +20,19 @@
 </div>
 <!-- Simple heading for the user homepage -->
     <div class="text-center p-3">
-        <div class="display-1"> Create an Exercise 🏋️</div>
+        <div class="display-1"> Edit a Exercise 🏋️</div>
     </div>
-<!-- Form fields to enter specific detail into the database for an exercise -->
+</div>
+<!-- Form fields to enter specific detail to update the database for an exercise -->
 <div class="container">
     <div class="text-center p6">
     <div class="row justify-content-md-center">
     <div class="col-md-4">
-    <form method="POST" action="/create-exercise">
+    <form method="POST">
         <div class="form-group">
             <label for="date">Date</label>
             <input
+              value="<%= exercise.date %>"
               type="date"
               class="form-control"
               id="name"
@@ -48,6 +50,7 @@
             <div class="col-md-4">
             <label for="name">Exercise Name</label>
             <input
+              value="<%= exercise.exerciseName %>"
               type="text"
               class="form-control"
               id="name"
@@ -64,6 +67,7 @@
             <div class="col-md-4">
             <label for="name">Weight</label>
             <input
+              value="<%= exercise.weight %>"
               type="text"
               class="form-control"
               id="name"
@@ -80,6 +84,7 @@
             <div class="col-md-4">
             <label for="name">Sets & Reps</label>
             <input
+              value="<%= exercise.setAndReps %>"
               type="text"
               class="form-control"
               id="name"
@@ -96,6 +101,7 @@
             <div class="col-md-4">
             <label for="name">Comments</label>
             <input
+              value="<%= exercise.comments %>"
               type="text"
               class="form-control"
               id="name"
