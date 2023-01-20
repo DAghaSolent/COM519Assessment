@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const User = require("./models/User");
 const Workout = require("./models/Workout");
 const Exercise = require("./models/Exercise");
+const expressSession = require("express-session");
 
 
 // controllers
@@ -19,6 +20,70 @@ const app = express();
 app.set("view engine", "ejs");
 
 const { WEB_PORT, MONGODB_URI } = process.env;
+
+
+app.use(expressSession({ secret: 'foo barr', cookie: { expires: new Date(253402300000000) } }))
+
+global.user = false;
+app.use("*", async (req, res, next) => {
+  if (req.session.userID && !global.user) {
+    const user = await User.findById(req.session.userID);
+    global.user = user;
+  }
+  next();
+})
+
+const authMiddleware = async (req, res, next) => {
+  const user = await User.findById(req.session.userID);
+  if (!user) {
+    return res.redirect('/');
+  }
+  next()
+}
+
+//________ Locking non logged in from users from  accessing the various pages____________________
+
+app.get("/home", authMiddleware, (req, res) => {
+  res.render("home", { errors: {} });
+});
+
+app.get("/workouts", authMiddleware, (req, res) => {
+  res.render("workouts", { errors: {} });
+});
+
+// app.get("/create-workout", authMiddleware, (req, res) => {
+//   res.render("create-workout", { errors: {} });
+// });
+
+// app.get("/edit-workout", authMiddleware, (req, res) => {
+//   res.render("edit-workout", { errors: {} });
+// });
+
+app.get("/create-exercise", authMiddleware, (req, res) => {
+  res.render("create-exercise", { errors: {} });
+});
+
+app.get("/edit-exercise", authMiddleware, (req, res) => {
+  res.render("edit-exercise", { errors: {} });
+});
+
+app.get("/edit-success", authMiddleware, (req, res) => {
+  res.render("edit-success", { errors: {} });
+});
+
+app.get("/delete-success", authMiddleware, (req, res) => {
+  res.render("edit-success", { errors: {} });
+});
+
+
+//_______________________End of locking out of non logged in users ____________________________ 
+
+
+app.get("/logout", async (req, res) => {
+  req.session.destroy();
+  global.user = false;
+  res.redirect('/');
+})
 
 mongoose.connect(MONGODB_URI, {useNewUrlParser: true});
 
