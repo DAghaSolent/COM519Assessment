@@ -29,8 +29,9 @@ exports.login = async (req, res) => {
         const match = await bcrypt.compare(req.body.password, user.password);
         
         if (match) {
+            req.session.userID = user._id;
             res.redirect('/home')
-            console.log('authenticated')
+            console.log(req.session.userID);
             return
         }
 

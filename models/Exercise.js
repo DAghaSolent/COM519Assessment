@@ -3,6 +3,8 @@ const { Schema } =  mongoose;
 
 const exerciseSchema = new Schema(
     {
+        //type:mongoose.Schema.Types.ObjectId,ref: "Exercise",
+
         date:{type:Date, required:[true, 'Date is required']},
         exerciseName:{type:String, required:[true, 'Exercise name is required']},
         weight:{type:String, required:[true, 'Weight is required']},

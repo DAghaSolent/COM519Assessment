@@ -47,9 +47,9 @@ app.get("/home", authMiddleware, (req, res) => {
   res.render("home", { errors: {} });
 });
 
-app.get("/workouts", authMiddleware, (req, res) => {
-  res.render("workouts", { errors: {} });
-});
+// app.get("/workouts", authMiddleware, (req, res) => {
+//   res.render("workouts", { errors: {} });
+// });
 
 // app.get("/create-workout", authMiddleware, (req, res) => {
 //   res.render("create-workout", { errors: {} });
@@ -93,7 +93,7 @@ mongoose.connection.on("error", (err) => {
   process.exit();
 });
 
-app.post("/create-workout");
+
 app.get("/create-workout", (req, res) => {
   res.render("create-workout");
 })
@@ -103,7 +103,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
-app.post("/create-exercise", exerciseController.create);
+app.get("/workouts/:workoutId/view-exercises", workoutController.viewWorkout);
+
+app.post("/create-workout", workoutController.createWorkout);
+
+app.post("/workouts/:workoutId/view-exercises/create-exercise", exerciseController.addExerciseToWorkout);
+
 
 app.get("/", (req, res) => {
   res.render("index");
@@ -113,7 +118,7 @@ app.get("/home", (req, res) => {
   res.render("home");
 });
 
-app.get("/workouts", workoutController.lists);
+app.get('/workouts', workoutController.list);
 
 app.get("/edit-exercise", (req, res) => {
   res.render("edit-exercise");
@@ -150,7 +155,7 @@ app.get("/login", (req, res) => {
 });
 app.post("/login", userController.login);
 
-app.get("/view-exercise", exerciseController.lists);
+app.get("/exercises", exerciseController.lists);
 
 app.get("/edit-success", (req, res) => {
   res.render("edit-success");
@@ -164,9 +169,9 @@ app.get("/create-success", (req, res) => {
   res.render("create-success");
 })
 
-app.get("/view-exercise/delete/:id", exerciseController.delete);
-app.get("/view-exercise/update/:id", exerciseController.edit);
-app.post("/view-exercise/update/:id", exerciseController.update);
+// app.get("/view-exercise/delete/:id", exerciseController.delete);
+// app.get("/view-exercise/update/:id", exerciseController.edit);
+// app.post("/view-exercise/update/:id", exerciseController.update);
 
 app.listen(WEB_PORT, () => {
   console.log(`Example app listening at http://localhost:${WEB_PORT}`);

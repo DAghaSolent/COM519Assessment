@@ -30,7 +30,8 @@
     <div class="text-center p6">
     <div class="row justify-content-md-center">
     <div class="col-md-4">
-    <form method="POST" action="/create-exercise">
+    <form action="/workouts/<%= workout._id %>/create-exercise" method="POST">
+        <input type="hidden" name="workoutId" value="<%= workout._id %>">
         <div class="form-group">
             <label for="date">Date</label>
             <input
@@ -107,5 +108,5 @@
             />
         </div>
             </div>
-    <button type="submit" class="col-lg-3 btn btn-success">Submit</button>
+    <button type="submit" class="col-lg-3 btn btn-success">Add Exercise</button>
 </div>

@@ -1,32 +1,67 @@
 const Exercise = require("../models/Exercise");
 const { db } = require("../models/User");
+const Workout = require("../models/Workout");
 
-exports.create = async (req, res) => {
+
+// exports.create = async (req, res) => {
+//     try{
+//         let exercise =  new Exercise(
+//             {date: req.body.date, 
+//             exerciseName: req.body.exerciseName, 
+//             weight: req.body.weight, 
+//             setAndReps: req.body.setAndReps, 
+//             comments: req.body.comments});
+//         await exercise.save();
+//         res.redirect("/create-success");
+//     }catch(e){
+//         if(e.errors) {
+//             console.log(e.errors);
+//             res.render('create-exercise', { errors: e.errors});
+//             return;
+//         }
+//         return res.status(400).send({
+//             message: JSON.parse(e),
+//         });
+//     }
+// }
+
+exports.addExerciseToWorkout = async (req, res) => {
     try{
-        let exercise =  new Exercise(
-            {date: req.body.date, 
+        let workout = await Workout.findById(req.params.workoutId);
+        if (!workout) {
+            res.status(404).send({ message: 'Workout not found' });
+            return;
+        }
+
+        let exercise = new Exercise({
+            date: req.body.date,
             exerciseName: req.body.exerciseName, 
             weight: req.body.weight, 
             setAndReps: req.body.setAndReps, 
-            comments: req.body.comments});
+            comments: req.body.comments
+            
+        });
+        
+        workout.exercise.push(exercise);
+
+        await workout.save();
         await exercise.save();
-        res.redirect("/create-success");
+
+        res.redirect(`/workouts/${workout._id}/view-exercises`);
+
     }catch(e){
-        if(e.errors) {
-            console.log(e.errors);
-            res.render('create-exercise', { errors: e.errors});
-            return;
-        }
-        return res.status(400).send({
-            message: JSON.parse(e),
+        res.status(400).send({
+            message: "Error adding exercise to workout",
+            error: e
         });
     }
-}
+};
+
 
 exports.lists = async (req, res) => {
     try{
         const exercises = await Exercise.find({});
-        res.render("view-exercise", {exercises});
+        res.render("/workouts/:workoutId/exercises", {exercises: exercise});
     } catch(e){
         res.status(404).send({message: "could not find exercise"})
     }
