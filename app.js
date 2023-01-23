@@ -5,14 +5,12 @@ const mongoose = require("mongoose");
 const chalk = require("chalk");
 const bodyParser = require('body-parser');
 const User = require("./models/User");
-const Workout = require("./models/Workout");
 const Exercise = require("./models/Exercise");
 const expressSession = require("express-session");
 
 
 // controllers
 
-const workoutController = require("./controllers/workout");
 const userController = require("./controllers/user");
 const exerciseController = require("./controllers/exercise");
 
@@ -47,18 +45,6 @@ app.get("/home", authMiddleware, (req, res) => {
   res.render("home", { errors: {} });
 });
 
-app.get("/workouts", authMiddleware, (req, res) => {
-  res.render("workouts", { errors: {} });
-});
-
-// app.get("/create-workout", authMiddleware, (req, res) => {
-//   res.render("create-workout", { errors: {} });
-// });
-
-// app.get("/edit-workout", authMiddleware, (req, res) => {
-//   res.render("edit-workout", { errors: {} });
-// });
-
 app.get("/create-exercise", authMiddleware, (req, res) => {
   res.render("create-exercise", { errors: {} });
 });
@@ -72,9 +58,8 @@ app.get("/edit-success", authMiddleware, (req, res) => {
 });
 
 app.get("/delete-success", authMiddleware, (req, res) => {
-  res.render("edit-success", { errors: {} });
+  res.render("delete-success", { errors: {} });
 });
-
 
 //_______________________End of locking out of non logged in users ____________________________ 
 
@@ -93,15 +78,9 @@ mongoose.connection.on("error", (err) => {
   process.exit();
 });
 
-app.post("/create-workout");
-app.get("/create-workout", (req, res) => {
-  res.render("create-workout");
-})
-
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
 
 app.post("/create-exercise", exerciseController.create);
 
@@ -113,19 +92,9 @@ app.get("/home", (req, res) => {
   res.render("home");
 });
 
-app.get("/workouts", workoutController.lists);
-
 app.get("/edit-exercise", (req, res) => {
   res.render("edit-exercise");
 });
-
-app.get("/edit-workout", (req, res) => {
-  res.render("edit-workout");
-});
-
-app.get("/create-workout", (req, res) => {
-  res.render("create-workout");
-})
 
 app.get("/join", (req, res) => {
   res.render('sign-up', {errors: {}});
@@ -171,5 +140,4 @@ app.post("/view-exercise/update/:id", exerciseController.update);
 app.listen(WEB_PORT, () => {
   console.log(`Example app listening at http://localhost:${WEB_PORT}`);
 });
-
 
