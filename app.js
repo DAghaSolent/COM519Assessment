@@ -66,9 +66,9 @@ app.get("/delete-success", authMiddleware, (req, res) => {
   res.render("delete-success", { errors: {} });
 });
 
-// app.get("/search-exercises", authMiddleware, (req, res) => {
-//   res.render("search-exercises", { errors: {} });
-// });
+app.get("/search-exercises", authMiddleware, (req, res) => {
+  res.render("search-exercises", { errors: {} });
+});
 
 //_______________________End of locking out of non logged in users ____________________________ 
 
