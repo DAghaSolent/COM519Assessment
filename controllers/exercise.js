@@ -8,7 +8,8 @@ exports.create = async (req, res) => {
             exerciseName: req.body.exerciseName, 
             weight: req.body.weight, 
             setAndReps: req.body.setAndReps, 
-            comments: req.body.comments});
+            comments: req.body.comments,
+            user: req.session.userID,});
         await exercise.save();
         res.redirect(`view-exercise/?message=New Exercise: ${req.body.exerciseName} with Date: ${req.body.date} has been created`)
     }catch(e){
@@ -26,7 +27,7 @@ exports.create = async (req, res) => {
 exports.lists = async (req, res) => {
     try{
         const message = req.query.message;
-        const exercises = await Exercise.find({});
+        const exercises = await Exercise.find({user: req.session.userID});
         res.render("view-exercise", {exercises, message: req.query?.message});
     } catch(e){
         res.status(404).send({message: "could not find exercise"})

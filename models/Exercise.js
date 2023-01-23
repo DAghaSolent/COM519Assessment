@@ -10,6 +10,7 @@ const exerciseSchema = new Schema(
 
         // I have ommitted comments since I want it to be an optional input for the user.
         comments:{type:String},
+        user: { type: Schema.Types.ObjectId, ref: 'User', required:true}
     }
 )
 

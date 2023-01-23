@@ -70,10 +70,19 @@ app.get("/search-exercises", authMiddleware, (req, res) => {
   res.render("search-exercises", { errors: {} });
 });
 
+// function that dosen't allow non logged in or un authenticated users from logging in and creating an exercise.
+//app.post('/create-exercise', authMiddleware, exerciseController.create);
+
 //_______________________End of locking out of non logged in users ____________________________ 
 
 
 app.get("/logout", async (req, res) => {
+  req.session.destroy();
+  global.user = false;
+  res.redirect('/');
+})
+
+app.get("/view-exercise/logout", async (req, res) => {
   req.session.destroy();
   global.user = false;
   res.redirect('/');
