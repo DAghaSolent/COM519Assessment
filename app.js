@@ -13,6 +13,7 @@ const expressSession = require("express-session");
 
 const userController = require("./controllers/user");
 const exerciseController = require("./controllers/exercise");
+const exerciseApiController = require("./controllers/api/exercise");
 
 const app = express();
 app.set("view engine", "ejs");
@@ -65,6 +66,10 @@ app.get("/delete-success", authMiddleware, (req, res) => {
   res.render("delete-success", { errors: {} });
 });
 
+// app.get("/search-exercises", authMiddleware, (req, res) => {
+//   res.render("search-exercises", { errors: {} });
+// });
+
 //_______________________End of locking out of non logged in users ____________________________ 
 
 
@@ -88,12 +93,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post("/create-exercise", exerciseController.create);
 
+app.get("/api/search-exercises", exerciseApiController.list);
+
 app.get("/", (req, res) => {
   res.render("index");
 });
 
 app.get("/home", (req, res) => {
   res.render("home");
+});
+
+app.get("/search-exercises", (req, res) => {
+  res.render("search-exercises");
 });
 
 app.get("/edit-exercise", (req, res) => {

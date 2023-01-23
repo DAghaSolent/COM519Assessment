@@ -13,4 +13,5 @@ const exerciseSchema = new Schema(
     }
 )
 
+exerciseSchema.index({'$**': 'text'});
 module.exports = mongoose.model("Exercise", exerciseSchema);
