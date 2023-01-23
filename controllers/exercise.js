@@ -10,7 +10,7 @@ exports.create = async (req, res) => {
             setAndReps: req.body.setAndReps, 
             comments: req.body.comments});
         await exercise.save();
-        res.redirect("/create-success");
+        res.redirect(`view-exercise/?message=New Exercise: ${req.body.exerciseName} with Date: ${req.body.date} has been created`)
     }catch(e){
         if(e.errors) {
             console.log(e.errors);
@@ -25,8 +25,9 @@ exports.create = async (req, res) => {
 
 exports.lists = async (req, res) => {
     try{
+        const message = req.query.message;
         const exercises = await Exercise.find({});
-        res.render("view-exercise", {exercises});
+        res.render("view-exercise", {exercises, message: req.query?.message});
     } catch(e){
         res.status(404).send({message: "could not find exercise"})
     }
@@ -36,7 +37,7 @@ exports.delete = async (req, res) => {
     const id = req.params.id;
     try{
         await Exercise.findByIdAndDelete(id);
-        res.redirect("/delete-success");
+        res.redirect(`/view-exercise/?message= Exercise has been sucessfully deleted`);
     } catch(e){
         res.status(404).send({message: "could not delete exercise"})
     }
@@ -62,7 +63,7 @@ exports.update = async (req, res) => {
     const id = req.params.id;
     try{
         const exercise = await Exercise.updateOne({ _id: id }, req.body, {runValidators:true});
-        res.redirect("/edit-success");
+        res.redirect(`/view-exercise/?message= Exercise: ${req.body.exerciseName} with Date: ${req.body.date} has been sucessfully updated`);
     }catch(e){
         if(e.errors){
             return res.render('update-exercise', {errors: e.errors, exercise:req.body});

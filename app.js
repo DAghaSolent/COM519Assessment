@@ -49,6 +49,10 @@ app.get("/create-exercise", authMiddleware, (req, res) => {
   res.render("create-exercise", { errors: {} });
 });
 
+// app.get("/view-exercise", authMiddleware, (req, res) => {
+//   res.render("view-exercise", { errors: {}, message: req.query?.message});
+// });
+
 app.get("/edit-exercise", authMiddleware, (req, res) => {
   res.render("edit-exercise", { errors: {} });
 });

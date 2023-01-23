@@ -27,6 +27,22 @@
         </div>
     </div>
 
+<!-- Adding in message validation for successfull creation of an exercise -->
+
+<div class="container">
+    <div class="row col-md-12 col-md-offset-2 custyle mx-auto">
+        <div class="text-center p-3">
+    <% if (message) {   %> 
+     <div class="row justify-content-md-center">
+       <div class="alert alert-success" role="alert">
+             <%= message %>
+       </div>
+     </div>
+     </div>
+    </div>
+    </div>
+   <% } %>
+
 <!-- Table data for exercises -->
 <table class="table table-bordered table-dark">
 <thead>
