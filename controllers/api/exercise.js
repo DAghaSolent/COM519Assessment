@@ -8,9 +8,16 @@ exports.list = async (req, res ) => {
     }
 
     try{
-        const Result = await Exercise.find(
-            {$text: {$search: searchQuery}},
-        )
+        const Result = await Exercise.find({
+            $text: {$search: searchQuery},
+            user: req.session.userID,
+        });
+        if (!Result.length) {
+            res.render('view-exercise', {
+                message: 'No results found'
+            });
+            return;
+        }
         res.json(Result);
     } catch(error){
         console.log(error);

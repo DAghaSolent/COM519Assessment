@@ -50,9 +50,6 @@ app.get("/create-exercise", authMiddleware, (req, res) => {
   res.render("create-exercise", { errors: {} });
 });
 
-// app.get("/view-exercise", authMiddleware, (req, res) => {
-//   res.render("view-exercise", { errors: {}, message: req.query?.message});
-// });
 
 app.get("/edit-exercise", authMiddleware, (req, res) => {
   res.render("edit-exercise", { errors: {} });
@@ -69,9 +66,6 @@ app.get("/delete-success", authMiddleware, (req, res) => {
 app.get("/search-exercises", authMiddleware, (req, res) => {
   res.render("search-exercises", { errors: {} });
 });
-
-// function that dosen't allow non logged in or un authenticated users from logging in and creating an exercise.
-//app.post('/create-exercise', authMiddleware, exerciseController.create);
 
 //_______________________End of locking out of non logged in users ____________________________ 
 
