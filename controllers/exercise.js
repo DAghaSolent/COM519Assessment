@@ -74,3 +74,17 @@ exports.update = async (req, res) => {
         });
     }
 }
+
+exports.last7DaysExercises = async (req, res) => {
+    try {
+        const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+        const exercises = await Exercise.find({
+            user: req.session.userID,
+            date: { $gte: sevenDaysAgo }
+        }).sort({ date: -1 }).limit(10);
+        res.render("home", { exercises });
+    } catch (e) {
+        res.status(404).send({ message: "could not find exercise" });
+    }
+};
+

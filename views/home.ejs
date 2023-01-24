@@ -34,6 +34,30 @@
         <a button type="button" class="col-lg-9 btn btn-primary btn-lg"  href="/search-exercises" type="button">Search Exercises</button></a>
     </form>
     </div>
+    <div>
+        <div class="container text-center">
+            <h1>Summary of Last 7 days </h1>
+        <table class="table table-bordered table-dark">
+            <thead>
+                <tr>
+                    <td>Date</td>
+                    <td>Exercise Name</td>
+                    <td>Weight</td>
+                    <td>Sets & Reps</td>
+                    <td>Comments</td>
+                </tr>
+
+                <% exercises.forEach((exercise) => { %>
+                <tr>
+                    <td><%= exercise.date.toDateString() %></td>
+                    <td><%= exercise.exerciseName %></td>
+                    <td><%= exercise.weight %></td>
+                    <td><%= exercise.setAndReps %></td>
+                    <td><%= exercise.comments %></td>
+                </tr>
+                <% }); %>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>

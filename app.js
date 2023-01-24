@@ -42,9 +42,6 @@ const authMiddleware = async (req, res, next) => {
 
 //________ Locking non logged in from users from  accessing the various pages____________________
 
-app.get("/home", authMiddleware, (req, res) => {
-  res.render("home", { errors: {} });
-});
 
 app.get("/create-exercise", authMiddleware, (req, res) => {
   res.render("create-exercise", { errors: {} });
@@ -97,6 +94,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.post("/create-exercise", exerciseController.create);
 
 app.get("/api/search-exercises", exerciseApiController.list);
+
+app.get("/home", exerciseController.last7DaysExercises);
 
 app.get("/", (req, res) => {
   res.render("index");
