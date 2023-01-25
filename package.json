@@ -5,12 +5,16 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon app.js",
-    "queryRunner": "nodemon query-runner.js"
+    "start": "node app.js",
+    "queryRunner": "nodemon query-runner.js",
+    "seedProduction": "cross-env NODE_ENV=production node seeder.js",
+    "seed": "node seeder.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "nodemon": "^2.0.5"
   },
   "dependencies": {
