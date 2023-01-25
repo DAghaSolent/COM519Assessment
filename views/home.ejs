@@ -14,6 +14,8 @@
         <nav class="navbar navbar-light bg-light">
             <form class="form-inline">
                 <a button type ="button" class="btn btn-success btn-lg" href="https://uk.linkedin.com/in/danial-agha-577367132"><i class="bi bi-linkedin"></i> Contact Me</a>
+                <a button type="button" class="btn btn-primary btn-lg" href="search-exercises">Search for Exercises</a>
+                <a button type="button" class="btn btn-primary btn-lg" href="view-exercise">View Exercises</a>
                 <% if(user) { %>
                     <a button type="button" class="btn btn-primary btn-lg" href="logout"> <%= user.email %> (Logout) </a> <%
                 }%>
@@ -30,8 +32,8 @@
             <div class="col-lg-12"><img src="shi.jpg" alt="Shi Zhiyong" width="970" height="530"></div>
           </div>
     <form class="form-inline">
-        <a button type="button" class="col-lg-9 btn btn-secondary btn-lg"  href="/view-exercise" type="button">Exercise Management Logger</button></a>
-        <a button type="button" class="col-lg-9 btn btn-primary btn-lg"  href="/search-exercises" type="button">Search Exercises</button></a>
+        <a button type="button" class="col-lg-9 btn btn-secondary btn-lg"  href="view-exercise" type="button">Exercise Management Logger</button></a>
+        <a button type="button" class="col-lg-9 btn btn-primary btn-lg"  href="search-exercises" type="button">Search Exercises</button></a>
     </form>
     </div>
     <div>
