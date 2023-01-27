@@ -20,7 +20,7 @@
 
 <p>Within my application I have two database collections which are exercises and users and they are being stored on cloud database solution called MongoDB.</p>
 
-<p>My applicationn has 4 key folders</p>
+<p>My application has 4 key folders</p>
 <li>Controllers which has my exercise and user controllers which communicate with their respective models. Alongside that has an API folder which has a function inside of it which is useful for searching exercises</li>
 <li>Models folder which holds the schemas for my database collections User and Exercise</li>
 <li>Views folder which holds all my front end web pages </li>
@@ -321,7 +321,85 @@ module.exports = mongoose.model("Exercise", exerciseSchema);
 
 <h5>Users Collection</h5>
 
+<p>The users collection stores information about each user and it is utilised within the user authentication. Each user has an Email and Password. </p>
 
+```javascript
+const userSchema = new Schema(
+    {
+        email: { type: String, required: [true, 'email is required'], unique: true },
+        password: { type: String, required: [true, 'password is required'] },
+    },
+    { timestamps: true }
+);
+```
+<p>User collection schema</p>
+
+```javascript
+{
+  "_id": {
+    "$oid": "63d1820e5c0b71249c89f084"
+  },
+  "email": "Dannyagha@hotmail.co.uk",
+  "password": "$2b$10$.NjMfB9T46/hccJUo.wZmuAgTT39zK6EqthpmmC0XGeLYCTZwNQG.",
+  "createdAt": {
+    "$date": "2023-01-25T19:25:02.306Z"
+  },
+  "updatedAt": {
+    "$date": "2023-01-25T19:25:02.306Z"
+  },
+  "__v": 0
+}
+```
+<p>Example of a document from the user collection</p>
+
+<h5>Exercises Collection</h5>
+<p>The exercise collection stores information about a single exercise that is created by a user. Also an exercise has a relationship and association with a user/user_id. For security purposes we are not storing the password in plain text we are using bcrypt to hash the password.</p>
+
+```javascript
+const mongoose = require("mongoose");
+const { Schema } =  mongoose;
+
+const exerciseSchema = new Schema(
+    {
+        date:{type:Date, required:[true, 'Date is required']},
+        exerciseName:{type:String, required:[true, 'Exercise name is required']},
+        weight:{type:String, required:[true, 'Weight is required']},
+        setAndReps:{type:String, required:[true, 'Set and Reps are required']},
+
+        // I have ommitted comments since I want it to be an optional input for the user.
+        comments:{type:String},
+        user: { type: Schema.Types.ObjectId, ref: 'User', required:true}
+    }
+)
+
+exerciseSchema.index({'$**': 'text'});
+module.exports = mongoose.model("Exercise", exerciseSchema);
+```
+<p>As you can see in the last line of the schema I make a reference to a userID. This sets up the relationship between a user and an exercise.This mean every exercise created will have a relationship to a user. Some key things to note from this schema is that the create and edit error validation for missing information is only vital because of the attributes that have the keyword "true:" followed by the message.If that specific information is missing when creating or editing an exercise than that specific message will be shown for the missing attribute.</p>
+
+```javascript
+{
+  "_id": {
+    "$oid": "63d189082eca8e10c3e09d22"
+  },
+  "date": {
+    "$date": "2023-01-24T00:00:00Z"
+  },
+  "exerciseName": "Back Squat",
+  "weight": "(130kg)/ (130kg)/ (125kg)",
+  "setAndReps": "(1,8)/ (2,6)/ (3,7)",
+  "comments": "In my 3rd set was unable to do 130kg so dropped to 125kg",
+  "user": {
+    "$oid": "63d1820e5c0b71249c89f084"
+  },
+  "__v": 0
+}
+```
+<p>Here is an example of a document from the exercise collections as you can see with the user attribute there is a objectID referenced with that user attribute which is the userID that created that exercise.</p>
+
+<p>As you can see with the two collection schemas that I created I was able to structure a relationship between the two collections. This is because when analysing and designing the database, I wanted to create a relationship where a user has many exercises associated to them in a one(User) to many(exercises) relationship.</p>
+
+<p>The relationship that I created was vital for my application to work effectively as this associated an exercise to a user, this functionality made it so that a user on my application would be able to do CRUD and search operations for exercises that were associated with that user. The relationship association also locked the users from accessing or altering other users exercise data which is another reason why this relationship was vital.</p>
 
 
 <h2>References</h2><hr>
