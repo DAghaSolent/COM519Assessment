@@ -18,17 +18,13 @@
 <h2>System Overview</h2><hr>
 <p> The application that I created was built with a MVC (Model, View, Controller) architecture in mind, I used Node.js for the back end to connect my application to MongoDB which I used as a cloud database solution that was holding the data for this application which was the individual exercises and the users that would sign-up and login onto the application. For the front end views I used EJS and Bootstrap to create my views for my application. The reason for creating my views in Bootstrap over alternatives such as plain CSS or Tailwind CSS was the simplicity and efficiency to create appealing views for my application.</p>
 
+<p>Within my application I have two database collections which are exercises and users and they are being stored on cloud database solution called MongoDB.</p>
 
-<h4>Database collections</h4><hr>
-<p> The database holds 2 collections one that is called "users" which holds user information such as email and password, the application uses this information to allow users to sign up and login into my application. The other collection is called "exercises" which allows the user to store their exercise logs.<p>
-
-<p> Within my application I have 2 models and within those 2 models I have a schema for both data collection which defines the shape of the data for each document that is added to that collection, alongside that I can use the schema to police and validate whatever data that is inputted by the user. Finally in my application I was able to structure relationships between the different collections, in my example I implemented a relationship between the user collection and the exercise collection. This is because I wanted a relationship that an individual user has many exercises, which I was able to successfully implement.<p>
-
-![](ReportImages/userSchema.png)
-
-![](ReportImages/exerciseSchema.png)
-
-<p> In this image you can see that the exercise schema references the userSchema through the use of a userID, this was done to make an exercise associated with a user. This relationship was vital for my program to work effectively as this associated an exercise to a user, this functionality made it so that a user on my application can only do CRUD(Create Read Update Delete) operations and search for exercises that were associated with the user.</p>
+<p>My applicationn has 4 key folders</p>
+<li>Controllers which has my exercise and user controllers which communicate with their respective models. Alongside that has an API folder which has a function inside of it which is useful for searching exercises</li>
+<li>Models folder which holds the schemas for my database collections User and Exercise</li>
+<li>Views folder which holds all my front end web pages </li>
+<li>Public folder which has some basic images for my application, also their is a scripts folder inside public which has an important script that is used to allow functionality for a user to search for an exercise.</li>
 
 <h4>Controllers</h4><hr>
 
@@ -38,30 +34,176 @@
 <p>My user controller that I have implemented is used to handle user authentication in two ways. One function allows a new user to sign up to my application and the other function handles the authentication by allowing the user to login in to my application. </p>
 
 
-![](ReportImages/createUserFunction.png)
+```javascript
+const User = require('../models/User');
+const bcrypt = require('bcrypt');
+
+exports.create = async (req, res) => {
+    try {
+
+        const user = new User({ email: req.body.email, password: req.body.password });
+        await user.save();
+        res.redirect('/home')
+    } catch (e) {
+        if (e.errors) {
+            console.log(e.errors);
+            res.render('sign-up', { errors: e.errors })
+            return;
+        }
+        return res.status(400).send({
+            message: JSON.parse(e),
+        });
+    }
+```
+
+    
 <p> Function from user controller which creates a new user and allows a user to sign up to my application.</p>
 
-![](ReportImages/Login.png)
+```javascript
+exports.login = async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.body.email });
+        if (!user) {
+            res.render('login-user', { errors: { email: { message: 'email not found' } } })
+            return;
+        }
+
+        const match = await bcrypt.compare(req.body.password, user.password);
+        
+        if (match) {
+            req.session.userID = user._id;
+            res.redirect('/home')
+            console.log(req.session.userID);
+            return
+        }
+
+        res.render('login-user', { errors: { password: { message: 'password does not match' } } })
+
+
+    } catch (e) {
+        return res.status(400).send({
+            message: JSON.parse(e),
+        });
+    }
+}
+```
+
 <p>Function that handles user authentication and allows the user to login. It does this by finding the user through the user's email that was inputted and then checks the password that was inputted with the password that was associated with the user. Within the function there is validation that is passed back to the user if there is no email found or if there is no match with the email and password. If the login is successful then the user is then redirected to the home page.
 
 <h5> Exercise Controller</h5> <hr>
 <p>The exercise controller that I have implemented is used to communicate with the exercise model to retrieve specific data depending on the user's action.</p>
 
 
-![](ReportImages/createExerciseFunction.png)
+```javascript
+const Exercise = require("../models/Exercise");
+const { db } = require("../models/User");
+
+exports.create = async (req, res) => {
+    try{
+        let exercise =  new Exercise(
+            {date: req.body.date, 
+            exerciseName: req.body.exerciseName, 
+            weight: req.body.weight, 
+            setAndReps: req.body.setAndReps, 
+            comments: req.body.comments,
+            user: req.session.userID,});
+        await exercise.save();
+        res.redirect(`view-exercise/?message=New Exercise: ${req.body.exerciseName} with Date: ${req.body.date} has been created`)
+    }catch(e){
+        if(e.errors) {
+            console.log(e.errors);
+            res.render('create-exercise', { errors: e.errors});
+            return;
+        }
+        return res.status(400).send({
+            message: JSON.parse(e),
+        });
+    }
+}
+```
+
 <p>This function here communicates to the exercise model to create a new exercise record within the database. If successful redirects the user back to the view-exercise page and displays a success message back to the user.</p>
 
-![](ReportImages/listExercises.png)
+```javascript
+exports.lists = async (req, res) => {
+    try{
+        const message = req.query.message;
+        const exercises = await Exercise.find({user: req.session.userID});
+        res.render("view-exercise", {exercises, message: req.query?.message});
+    } catch(e){
+        res.status(404).send({message: "could not find exercise"})
+    }
+}
+```
+
 <p>This function communicates with the exercise model to get all the exercises that is associated with the logged in user. When the exercises are found it renders and passes the exercises found to the view layer page view-exercise. The view-exercise page then handles how it displays that information to the user.</p>
 
-![](ReportImages/deleteFunction.png)
+```javascript
+exports.delete = async (req, res) => {
+    const id = req.params.id;
+    try{
+        await Exercise.findByIdAndDelete(id);
+        res.redirect(`/view-exercise/?message= Exercise has been sucessfully deleted`);
+    } catch(e){
+        res.status(404).send({message: "could not delete exercise"})
+    }
+}
+```
+
 <p>This function communicates to the exercise model to find an exercise by it's unique id and then deletes it, if successful then a success message is presented to the user.</p>
 
 
-![](ReportImages/editAndUpdate.png)
+```javascript
+exports.edit = async (req, res) => {
+    const id = req.params.id;
+    try{
+        const exercise = await Exercise.findById(id);
+        res.render("update-exercise", {exercise: exercise, id: id, errors: {} });
+    } catch(e){
+        if(e.errors){
+            console.log(e.errors);
+            return res.render('update-exercise', {errors: e.errors });
+        }
+        res.status(404).send({
+            message: `could not find exercise ${id}.`,
+        });
+    }
+}
+
+exports.update = async (req, res) => {
+    const id = req.params.id;
+    try{
+        const exercise = await Exercise.updateOne({ _id: id }, req.body, {runValidators:true});
+        res.redirect(`/view-exercise/?message= Exercise: ${req.body.exerciseName} with Date: ${req.body.date} has been sucessfully updated`);
+    }catch(e){
+        if(e.errors){
+            return res.render('update-exercise', {errors: e.errors, exercise:req.body});
+        }
+        res.status(404).send({
+            message: `could not update exercise ${id}.`,
+        });
+    }
+}
+```
+
 <p>These 2 functions communicate to the exercise model to edit and update those edits to the specific exercise.</p>
 
-![](ReportImages/7DaysFunction.png)
+```javascript
+exports.last7DaysExercises = async (req, res) => {
+    try {
+        const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+        const exercises = await Exercise.find({
+            user: req.session.userID,
+            date: { $gte: sevenDaysAgo }
+        }).sort({ date: -1 }).limit(10);
+        res.render("home", { exercises });
+    } catch (e) {
+        res.status(404).send({ message: "could not find exercise" });
+    }
+};
+```
+
+
 <p>This function here works similar to the lists function that was previously mentioned, but this function communicates with the exercise model to retrieve exercises that have a date within the last 7 days. It retrieves and renders the information and passes it to the home page. The application utilities this function to provide a recent summary to showcase the last 7 days worth of exercises onto the homepage. 
 
 <h4>Key View and interfaces</h4><hr>
@@ -69,7 +211,34 @@
 ![](ReportImages/indexPage.png)
 <p>When the user goes to my hosted application they will be presented with this index page. From there the user has the option to sign up or login onto the application. 
 
-![](ReportImages/lockedOutNonUsers.png)
+```javascript
+//________ Locking non logged in from users from  accessing the various pages____________________
+
+
+app.get("/create-exercise", authMiddleware, (req, res) => {
+  res.render("create-exercise", { errors: {} });
+});
+
+
+app.get("/edit-exercise", authMiddleware, (req, res) => {
+  res.render("edit-exercise", { errors: {} });
+});
+
+app.get("/edit-success", authMiddleware, (req, res) => {
+  res.render("edit-success", { errors: {} });
+});
+
+app.get("/delete-success", authMiddleware, (req, res) => {
+  res.render("delete-success", { errors: {} });
+});
+
+app.get("/search-exercises", authMiddleware, (req, res) => {
+  res.render("search-exercises", { errors: {} });
+});
+
+//_______________________End of locking out of non logged in users ____________________________
+```
+
 <p>The user must be logged in to be able to do CRUD operations on the application. This image shows all the routes that are protected and locked down, which forces the user to be logged in to be able to get to these pages. This is critical that a user must be logged in when creating an exercise as there is a relationship association between an exercise and a user.
 
 ![](ReportImages/loginPage.png)
@@ -97,7 +266,27 @@
 ![](ReportImages/CreateExerciseErrorValidition.png)
 <p>In this image I have implemented error validation that will alert the user if they are missing required information when creating an exercise.</p>
 
-![](ReportImages/exerciseSchema.png)
+```javascript
+const mongoose = require("mongoose");
+const { Schema } =  mongoose;
+
+const exerciseSchema = new Schema(
+    {
+        date:{type:Date, required:[true, 'Date is required']},
+        exerciseName:{type:String, required:[true, 'Exercise name is required']},
+        weight:{type:String, required:[true, 'Weight is required']},
+        setAndReps:{type:String, required:[true, 'Set and Reps are required']},
+
+        // I have ommitted comments since I want it to be an optional input for the user.
+        comments:{type:String},
+        user: { type: Schema.Types.ObjectId, ref: 'User', required:true}
+    }
+)
+
+exerciseSchema.index({'$**': 'text'});
+module.exports = mongoose.model("Exercise", exerciseSchema);
+```
+
 <p>As you can see in the exercise schema the only attribute that is optional when creating an exercise is comments everything else excluding the user in the form is required when creating an exercise.</p>
 
 ![](ReportImages/successfullCreation.png)
@@ -126,6 +315,13 @@
 
 ![](ReportImages/unsucessfulSearch.png)
 <p>One key functionality I was able to successfully implement through the use of a good database relationship, in this image I have a different user where the exercise "Hip Thrust" is not associated with the user, that user is only allowed to search for exercises that are associated with that user. As you can see the application is returning an error when the user tries to search for an exercise that is not associated with that user. </p>
+
+<h2>Key Design Decisions</h2><hr>
+<p>The whole application as previously mentioned has a database that is stored on a cloud solution called MongoDB and within that database has 2 collections "users" and "exercises".</p>
+
+<h5>Users Collection</h5>
+
+
 
 
 <h2>References</h2><hr>
