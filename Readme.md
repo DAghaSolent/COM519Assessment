@@ -31,8 +31,3 @@ MONGODB_URI=mongodb+srv://admin:admin@winecluster.6gsqncc.mongodb.net/exercisesD
 ![](ReportImages/searchFunctionality.png)
 
 ![](ReportImages/signUpPage.png)
-<<<<<<< HEAD
-=======
-
-# TesTannya
->>>>>>> 713e106ac3cd684a4d1890765a839e78bbf3a7c4
