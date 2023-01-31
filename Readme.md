@@ -31,4 +31,3 @@ MONGODB_URI=mongodb+srv://admin:admin@winecluster.6gsqncc.mongodb.net/exercisesD
 ![](ReportImages/searchFunctionality.png)
 
 ![](ReportImages/signUpPage.png)
-
